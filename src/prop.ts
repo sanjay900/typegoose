@@ -209,4 +209,15 @@ export const arrayProp = (options: ArrayPropOptions) => (target: any, key: strin
   baseProp(options, Type, target, key, true);
 };
 
+export const mapProp = (options: ArrayPropOptions) => (target: any, key: string) => {
+  const Type = options.items;
+  baseProp(options, Type, target, key, false);
+  const name = target.constructor.name;
+  const sc = schema[name][key];
+  if (sc) {
+    sc.of = sc.type;
+    sc.type = mongoose.Schema.Types.Map;
+  }
+};
+
 export type Ref<T> = T | ObjectID;
